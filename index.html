@@ -12,7 +12,7 @@
             padding: 0;
             height: 100vh;
             background-color: #f4f4f4;
-            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fdepositphotos.com%2Fvector%2Fmenstrual-period-seamless-pattern-white-background-flat-vector-illustration-paper-341898940.html&psig=AOvVaw1pQdHVutzV6SYICAcaSNwO&ust=1738536045910000&source=images&cd=vfe&opi=89978449&ved=0');
+            background-image: url('https://st3.depositphotos.com/32153782/34189/v/1600/depositphotos_341898940-stock-illustration-menstrual-period-seamless-pattern-white.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -20,29 +20,51 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e91e63;
+            animation: logoAnimation 2s ease-out forwards;
+        }
+
+        @keyframes logoAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .container {
             max-width: 600px;
             width: 100%;
             padding: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeIn 1s ease-out;
         }
 
-        .slide {
-            display: none;
-        }
-
-        .active-slide {
-            display: block;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         button {
@@ -55,42 +77,45 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #d81b60;
+            transform: scale(1.1);
         }
 
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e91e63;
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        .link {
-            margin-top: 20px;
+        .active-slide {
+            display: block;
+            opacity: 1;
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .options button {
-            margin-bottom: 10px;
+        .error {
+            color: red;
+            margin-top: 10px;
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Slide 1: Logo -->
+    <!-- Slide 1: Login Page -->
     <div id="slide1" class="container slide active-slide">
         <div class="logo">GURLY</div>
         <h2>Welcome to GURLY!</h2>
-        <p>Your personal menstrual health assistant</p>
-        <button onclick="showSlide(2)">Get Started</button>
+        <p>Please login to continue</p>
+
+        <!-- Login Form -->
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <div id="loginError" class="error"></div>
     </div>
 
     <!-- Slide 2: Options (Main Menu) -->
@@ -171,21 +196,38 @@
     </div>
 
     <script>
+        // Dummy login credentials (this can be replaced with a real backend check)
+        const validUsername = "user";
+        const validPassword = "password123";
+
         // Function to show the correct slide based on the index
         function showSlide(slideNumber) {
             const allSlides = document.querySelectorAll('.slide');
             allSlides.forEach(slide => slide.classList.remove('active-slide'));
 
-            // If going back to the menu (Slide 2), we just display the options menu
             if (slideNumber === 2) {
                 document.getElementById('slide2').classList.add('active-slide');
             } else {
-                // Show the selected page (Period Tracker, Remedies, etc.)
                 document.getElementById('page' + slideNumber).classList.add('active-slide');
             }
         }
 
-        // Function to calculate the next period (from previous code)
+        // Function to handle login
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorOutput = document.getElementById("loginError");
+
+            if (username === validUsername && password === validPassword) {
+                // If valid credentials, show the main menu
+                showSlide(2);
+            } else {
+                // Display error message if credentials are invalid
+                errorOutput.textContent = "Invalid username or password. Please try again.";
+            }
+        }
+
+        // Function to calculate the next period
         function calculateNextPeriod() {
             let startDate = document.getElementById("startDate").value;
             let endDate = document.getElementById("endDate").value;
