@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GURLY - Menstrual Health</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f4f4f4;
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fdepositphotos.com%2Fvector%2Fmenstrual-period-seamless-pattern-white-background-flat-vector-illustration-paper-341898940.html&psig=AOvVaw1pQdHVutzV6SYICAcaSNwO&ust=1738536045910000&source=images&cd=vfe&opi=89978449&ved=0');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .active-slide {
+            display: block;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #e91e63;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #d81b60;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .link {
+            margin-top: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .options button {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Logo -->
+    <div id="slide1" class="container slide active-slide">
+        <div class="logo">GURLY</div>
+        <h2>Welcome to GURLY!</h2>
+        <p>Your personal menstrual health assistant</p>
+        <button onclick="showSlide(2)">Get Started</button>
+    </div>
+
+    <!-- Slide 2: Options (Main Menu) -->
+    <div id="slide2" class="container slide">
+        <h2>Choose an Option</h2>
+        <div class="options">
+            <button onclick="showSlide(3)">Period Tracker</button>
+            <button onclick="showSlide(4)">Home Remedies for Pain Relief</button>
+            <button onclick="showSlide(5)">Self Care</button>
+            <button onclick="showSlide(6)">Feminine Products</button>
+        </div>
+    </div>
+
+    <!-- Period Tracker (Page 3) -->
+    <div id="page3" class="container slide">
+        <h2>Period Tracker</h2>
+        <label for="startDate">Last Period Start Date:</label>
+        <input type="date" id="startDate">
+        
+        <label for="endDate">Last Period End Date:</label>
+        <input type="date" id="endDate">
+        
+        <button onclick="calculateNextPeriod()">Predict Next Period</button>
+        
+        <div class="result" id="output"></div>
+        <div class="error" id="errorOutput"></div>
+
+        <div class="link">
+            <button onclick="showSlide(2)">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Home Remedies for Pain Relief (Page 4) -->
+    <div id="page4" class="container slide">
+        <h2>Home Remedies for Pain Relief</h2>
+        <p>Here you can get suggestions for relieving menstrual pain.</p>
+        <div>
+            <ul>
+                <li>Warm beverages like ginger tea</li>
+                <li>Gentle exercise and stretches</li>
+                <li>Apply heat to your lower abdomen</li>
+                <li>Take over-the-counter pain medications if needed</li>
+            </ul>
+        </div>
+        <div class="link">
+            <button onclick="showSlide(2)">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Self Care (Page 5) -->
+    <div id="page5" class="container slide">
+        <h2>Self Care During Periods</h2>
+        <p>Take time to pamper yourself!</p>
+        <ul>
+            <li>Take a warm bath</li>
+            <li>Read a book or watch your favorite shows</li>
+            <li>Practice meditation or mindfulness</li>
+            <li>Indulge in self-care activities like skincare or facials</li>
+        </ul>
+        <div class="link">
+            <button onclick="showSlide(2)">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Feminine Products (Page 6) -->
+    <div id="page6" class="container slide">
+        <h2>Feminine Products During Periods</h2>
+        <p>Here are some products to help you through your period:</p>
+        <ul>
+            <li>Organic cotton pads</li>
+            <li>Reusable period underwear</li>
+            <li>Menstrual cups</li>
+            <li>Heating pads</li>
+        </ul>
+        <div class="link">
+            <button onclick="showSlide(2)">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the correct slide based on the index
+        function showSlide(slideNumber) {
+            const allSlides = document.querySelectorAll('.slide');
+            allSlides.forEach(slide => slide.classList.remove('active-slide'));
+
+            // If going back to the menu (Slide 2), we just display the options menu
+            if (slideNumber === 2) {
+                document.getElementById('slide2').classList.add('active-slide');
+            } else {
+                // Show the selected page (Period Tracker, Remedies, etc.)
+                document.getElementById('page' + slideNumber).classList.add('active-slide');
+            }
+        }
+
+        // Function to calculate the next period (from previous code)
+        function calculateNextPeriod() {
+            let startDate = document.getElementById("startDate").value;
+            let endDate = document.getElementById("endDate").value;
+            let errorOutput = document.getElementById("errorOutput");
+            errorOutput.innerHTML = ''; // Clear previous errors
+
+            if (!startDate || !endDate) {
+                document.getElementById("output").innerText = '';
+                errorOutput.innerText = "Please enter both the start and end date of your last period.";
+                return;
+            }
+
+            let endPeriodDate = new Date(endDate);
+            let nextPeriodStartDate = new Date(endPeriodDate);
+            nextPeriodStartDate.setMonth(endPeriodDate.getMonth() + 1); // Add 1 month to the end date
+
+            let options = { year: 'numeric', month: 'long', day: 'numeric' };
+            let nextPeriodFormatted = nextPeriodStartDate.toLocaleDateString(undefined, options);
+
+            document.getElementById("output").innerHTML = `<p>Your estimated next period start date: <strong>${nextPeriodFormatted}</strong></p>`;
+        }
+    </script>
+
+</body>
+</html>
